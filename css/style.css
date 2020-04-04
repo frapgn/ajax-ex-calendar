@@ -1,0 +1,35 @@
+body {
+    background-color: #303030;
+    font-family: sans-serif;
+    color: #d0d0d0;
+}
+.top-calendar,
+.main-calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.top-calendar h1 {
+    color: #bd0000;
+    font-size: 40px;
+}
+
+.btn-navigation {
+    background-color: #219bd7;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#calendar li,
+#nome-mese {
+    text-transform: capitalize;
+}
+
+.festivo {
+    color: red;
+}
