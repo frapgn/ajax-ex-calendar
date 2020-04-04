@@ -1,15 +1,15 @@
 var htmlGiorno = $('#calendar-template').html();
 var templateGiorno = Handlebars.compile(htmlGiorno);
 
-// Stampa il mese di Gennaio 2018
-// Tramite click stampare il mese successivo
 
+
+// Stampa il mese di Gennaio 2018
 var dataIniziale = moment('2018-01-01').locale('it');
-var meseIniziale = dataIniziale.format('M') - 1;
-console.log(meseIniziale);
+var meseIniziale = dataIniziale.format('M') - 1; //sottraggo 1 per farlo combaciare con le API
 stampaGiorniMese(dataIniziale);
 stampaFestivi(meseIniziale);
 
+// Tramite click stampare il mese successivo
 $('.mese-succ').click(function() {
     if(meseIniziale <= 10) {
         dataIniziale.add(1, 'months');
@@ -18,6 +18,7 @@ $('.mese-succ').click(function() {
     }
 });
 
+// Tramite click stampare il mese precedente
 $('.mese-prec').click(function() {
     if (meseIniziale >= 1) {
         dataIniziale.subtract(1, 'months');
@@ -27,6 +28,7 @@ $('.mese-prec').click(function() {
 
 });
 
+// Ricavo dall'API i festivi del mese che viene passato, coloro di rosso il giorno corrispondente e aggiungo di fianco il nome della festività
 function stampaFestivi(meseStampato) {
     $.ajax({
         url: 'https://flynn.boolean.careers/exercises/api/holidays',
@@ -47,6 +49,7 @@ function stampaFestivi(meseStampato) {
     });
 }
 
+// Stampo i giorni del mese che viene passato
 function stampaGiorniMese(meseDaStampare) {
     $('#calendar').empty();
     var standardDay = meseDaStampare.clone();
