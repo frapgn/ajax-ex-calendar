@@ -5,20 +5,26 @@ var templateGiorno = Handlebars.compile(htmlGiorno);
 // Tramite click stampare il mese successivo
 
 var dataIniziale = moment('2018-01-01').locale('it');
-var meseIniziale = 0;
+var meseIniziale = dataIniziale.format('M') - 1;
+console.log(meseIniziale);
 stampaGiorniMese(dataIniziale);
 stampaFestivi(meseIniziale);
 
 $('.mese-succ').click(function() {
-    dataIniziale.add(1, 'months');
-    stampaGiorniMese(dataIniziale);
-    stampaFestivi(++meseIniziale);
+    if(meseIniziale <= 10) {
+        dataIniziale.add(1, 'months');
+        stampaGiorniMese(dataIniziale);
+        stampaFestivi(++meseIniziale);
+    }
 });
 
 $('.mese-prec').click(function() {
-    dataIniziale.subtract(1, 'months');
-    stampaGiorniMese(dataIniziale);
-    stampaFestivi(--meseIniziale);
+    if (meseIniziale >= 1) {
+        dataIniziale.subtract(1, 'months');
+        stampaGiorniMese(dataIniziale);
+        stampaFestivi(--meseIniziale);
+    }
+
 });
 
 function stampaFestivi(meseStampato) {
