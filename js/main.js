@@ -1,29 +1,44 @@
 var htmlGiorno = $('#calendar-template').html();
 var templateGiorno = Handlebars.compile(htmlGiorno);
 
+var dataIniziale = moment('2018-01-01')
 
+var dataProcessata = dataIniziale.clone().locale('it');
+var limiteIniziale = moment('2018-01-01');
+var limiteFinale = moment('2018-12-01');
 
 // Stampa il mese di Gennaio 2018
-var dataIniziale = moment('2018-01-01').locale('it');
-var meseIniziale = dataIniziale.format('M') - 1; //sottraggo 1 per farlo combaciare con le API
-stampaGiorniMese(dataIniziale);
-stampaFestivi(meseIniziale);
+stampaGiorniMese(dataProcessata);
+stampaFestivi(dataProcessata);
 
 // Tramite click stampare il mese successivo
 $('.mese-succ').click(function() {
-    if(meseIniziale <= 10) {
-        dataIniziale.add(1, 'months');
-        stampaGiorniMese(dataIniziale);
-        stampaFestivi(++meseIniziale);
+    if(dataProcessata.isSameOrAfter(limiteFinale)) {
+        alert('Hai provato ad hackerarmi!');
+    } else {
+        $('.mese-prec').prop('disabled', false);
+        dataProcessata.add(1, 'months');
+        stampaGiorniMese(dataProcessata);
+        stampaFestivi(dataProcessata);
+        if(dataProcessata.isSameOrAfter(limiteFinale)) {
+            $('.mese-succ').prop('disabled', true);
+        }
     }
+
 });
 
 // Tramite click stampare il mese precedente
 $('.mese-prec').click(function() {
-    if (meseIniziale >= 1) {
-        dataIniziale.subtract(1, 'months');
-        stampaGiorniMese(dataIniziale);
-        stampaFestivi(--meseIniziale);
+    if(dataProcessata.isSameOrBefore(limiteIniziale)) {
+        alert('Hai provato ad hackerarmi!');
+    } else {
+        $('.mese-succ').prop('disabled', false);
+        dataProcessata.subtract(1, 'months');
+        stampaGiorniMese(dataProcessata);
+        stampaFestivi(dataProcessata);
+        if(dataProcessata.isSameOrBefore(limiteIniziale)) {
+            $('.mese-prec').prop('disabled', true);
+        }
     }
 
 });
@@ -34,8 +49,8 @@ function stampaFestivi(meseStampato) {
         url: 'https://flynn.boolean.careers/exercises/api/holidays',
         method: 'GET',
         data: {
-            year: 2018,
-            month: meseStampato
+            year: meseStampato.year(),
+            month: meseStampato.month()
         },
         success: function(data) {
             var giorniFestivi = data.response;
@@ -43,7 +58,7 @@ function stampaFestivi(meseStampato) {
                 var giornoFestivo = giorniFestivi[i];
                 var nomeFestivo = giornoFestivo.name;
                 var dataFestivo = giornoFestivo.date;
-                $('#calendar li[data-day="' + dataFestivo + '"]').addClass('festivo').append(' - ' + nomeFestivo);
+                $('#calendar .day-box[data-day="' + dataFestivo + '"]').addClass('festivo').append('<div>' + nomeFestivo + '</div>');
             }
         }
     });
@@ -60,10 +75,10 @@ function stampaGiorniMese(meseDaStampare) {
         // $('#calendar').append('<li>' + i + ' ' + nomeMese + '</li>');
         var giornoDaInserire = {
             day: i + ' ' + nomeMese,
-            dataDay: standardDay.format('YYYY-MM-DD')
+            dataDay: standardDay.format('YYYY-MM-DD'),
+            dayOfWeek: standardDay.isoWeekday()
         }
         var templateFinale = templateGiorno(giornoDaInserire);
-        $('#calendar').append(templateFinale);
         standardDay.add(1, 'day');
     }
 }
