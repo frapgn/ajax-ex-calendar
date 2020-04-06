@@ -7,6 +7,11 @@ var dataProcessata = dataIniziale.clone().locale('it');
 var limiteIniziale = moment('2018-01-01');
 var limiteFinale = moment('2018-12-01');
 
+for (var i = 1; i <= 7; i++) {
+    $('.days-of-week').append('<span data-day-of-week="' + i + '">' + dataProcessata.isoWeekday(i).format('dddd') + '</span>');
+    $('.days-of-week span[data-day-of-week="7"]').addClass('festivo');
+}
+
 // Stampa il mese di Gennaio 2018
 stampaGiorniMese(dataProcessata);
 stampaFestivi(dataProcessata);
@@ -77,12 +82,14 @@ function stampaGiorniMese(meseDaStampare) {
     for (var i = 1; i <= giorniMese; i++) {
         // $('#calendar').append('<li>' + i + ' ' + nomeMese + '</li>');
         var giornoDaInserire = {
-            day: i + ' ' + nomeMese,
+            // day: i + ' ' + nomeMese,
+            day: i,
             dataDay: standardDay.format('YYYY-MM-DD'),
-            dayOfWeek: standardDay.isoWeekday() // aggiunto come bonus :)
+            dayOfWeek: standardDay.isoWeekday()
         }
         var templateFinale = templateGiorno(giornoDaInserire);
         $('#calendar').append(templateFinale);
+        $('#calendar .day-box[data-day-of-week="7"]').addClass('festivo');
         standardDay.add(1, 'day');
     }
 }

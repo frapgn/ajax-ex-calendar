@@ -50,17 +50,21 @@ body {
     background-color: rgba(33, 155, 215, 0.62);
 }
 
-#calendar {
-    border: 1px solid white;
-    padding: 0;
-}
-
-#calendar .day-box {
+#calendar .day-box,
+.days-of-week span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     float: left;
     padding: 0 10px;
     text-align: center;
     width: calc(100% / 7);
-    height: 50px;
+    height: 70px;
+}
+
+.days-of-week span {
+    border-bottom: 1px solid #fff;
 }
 
 #calendar .day-box,
