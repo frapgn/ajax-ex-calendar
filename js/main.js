@@ -71,14 +71,18 @@ function stampaGiorniMese(meseDaStampare) {
     var giorniMese = meseDaStampare.daysInMonth();
     var nomeMese = meseDaStampare.format('MMMM');
     $('#nome-mese').text(nomeMese); // Aggiorna il nome del mese in top calendar
+    for (var i = 1; i < standardDay.isoWeekday(); i++) {
+        $('#calendar').append('<div class="day-box"></div>');
+    }
     for (var i = 1; i <= giorniMese; i++) {
         // $('#calendar').append('<li>' + i + ' ' + nomeMese + '</li>');
         var giornoDaInserire = {
             day: i + ' ' + nomeMese,
             dataDay: standardDay.format('YYYY-MM-DD'),
-            dayOfWeek: standardDay.isoWeekday()
+            dayOfWeek: standardDay.isoWeekday() // aggiunto come bonus :)
         }
         var templateFinale = templateGiorno(giornoDaInserire);
+        $('#calendar').append(templateFinale);
         standardDay.add(1, 'day');
     }
 }
